@@ -1,4 +1,6 @@
 // alert('hello')
+import { QuoteMessage } from "./messages";
+
 
 chrome.runtime.onMessage.addListener(
     function(
@@ -6,8 +8,21 @@ chrome.runtime.onMessage.addListener(
         sender: chrome.runtime.MessageSender, 
         sendResponse: (response: any) => void
     ): void {
+        console.log("received back message: " + request);
         if (request == 'record_selection') {
-            console.log("hello");
+            let response: QuoteMessage = new QuoteMessage(
+                "myQuote",
+                "url",
+                new Date()
+            );
+            console.log("sending response");
+            sendResponse(response);
         }
+
     }
 )
+
+// chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+//     console.log(response.farewell);
+//   });
+

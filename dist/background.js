@@ -7,10 +7,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // }
 function alertContentToRecordSelection() {
     var message = 'record_selection';
-    var callback = function (quoteInfo) {
-        console.log(quoteInfo.quote);
-    };
-    chrome.runtime.sendMessage(message, callback);
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        console.log(tabs);
+        chrome.tabs.sendMessage(tabs[0].id, message, function (quoteInfo) {
+            console.log("received a response");
+            console.log(quoteInfo.quote);
+            ;
+        });
+    });
 }
 var recordSelection = chrome.contextMenus.create({ "title": "Record Quote", "onclick": alertContentToRecordSelection });
+// chrome.runtime.onMessage.addListener(
+//     function(request, sender, sendResponse) {
+//       console.log(sender.tab ?
+//                   "from a content script:" + sender.tab.url :
+//                   "from the extension");
+//       if (request.greeting == "hello") {
+//         sendResponse({farewell: "goodbye"});
+//       }
+//     });
 //# sourceMappingURL=background.js.map
