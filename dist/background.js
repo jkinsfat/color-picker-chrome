@@ -5,18 +5,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //     console.log("info: " + JSON.stringify(info));
 //     console.log("tab: " + JSON.stringify(tab));
 // }
-function alertContentToRecordSelection() {
+function getCurrentTabSelection() {
     var message = 'record_selection';
+    var callback = function (quoteInfo) {
+        console.log(quoteInfo.quote);
+    };
+    messageCurrentActiveTab(message, callback);
+}
+function messageCurrentActiveTab(message, responseCallback) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        console.log(tabs);
-        chrome.tabs.sendMessage(tabs[0].id, message, function (quoteInfo) {
-            console.log("received a response");
-            console.log(quoteInfo.quote);
-            ;
-        });
+        chrome.tabs.sendMessage(tabs[0].id, message, responseCallback);
     });
 }
-var recordSelection = chrome.contextMenus.create({ "title": "Record Quote", "onclick": alertContentToRecordSelection });
+var recordSelection = chrome.contextMenus.create({ "title": "Record Quote", "contexts": ["selection"], "onclick": getCurrentTabSelection });
 // chrome.runtime.onMessage.addListener(
 //     function(request, sender, sendResponse) {
 //       console.log(sender.tab ?

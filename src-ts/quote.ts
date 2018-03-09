@@ -1,8 +1,4 @@
-export class Message {
-    constructor(readonly message:string) {}
-}
-
-export class QuoteMessage {
+export class Quote {
     constructor(
         readonly quote: string,
         readonly source: string,

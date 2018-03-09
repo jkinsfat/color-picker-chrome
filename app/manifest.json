@@ -3,7 +3,8 @@
     "name" : "Image Color Picker",
     "version" : "0.1",
     "permissions": [
-      "contextMenus"
+      "contextMenus",
+      "storage"
     ],
     "background": {
       "scripts": ["dist/background-bundle.js"]
