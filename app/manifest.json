@@ -1,0 +1,27 @@
+{
+    "manifest_version" : 2,
+    "name" : "Image Color Picker",
+    "version" : "0.1",
+    "permissions": [
+      "contextMenus"
+    ],
+    "background": {
+      "scripts": ["dist/background-bundle.js"]
+    },
+    "browser_action": {
+      "default_icon": {                    
+        "16": "assets/icon.png"                      
+      },
+      "default_title": "Quote Collection",      
+      "default_popup": "popup.html"        
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "<all_urls>"
+        ],
+        "js": ["dist/content-bundle.js"]
+      }
+    ]
+    
+}

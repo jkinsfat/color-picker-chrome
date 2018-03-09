@@ -1,0 +1,27 @@
+{
+  "name": "quote-saver",
+  "version": "1.0.0",
+  "description": "Chrome extension that saves selected quotes and their source",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chrome": "0.0.60",
+    "@types/node": "^9.4.7",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc; webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkinsfat/color-picker-chrome.git"
+  },
+  "author": "Jason Kinsfather",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jkinsfat/color-picker-chrome/issues"
+  },
+  "homepage": "https://github.com/jkinsfat/color-picker-chrome#readme"
+}
