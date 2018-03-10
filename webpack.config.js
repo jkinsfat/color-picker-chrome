@@ -3,7 +3,8 @@ const path = require('path');
 module.exports = {
   entry: {
       background: './dist/background.js',
-      content: './dist/content.js'
+      content: './dist/content.js',
+      popup: './dist/popup.js'
   },
   module: {
     rules: [

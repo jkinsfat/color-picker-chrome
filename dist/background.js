@@ -1,15 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// function genericOnClick(info, tab) {
-//     console.log("item " + info.menuItemId + " was clicked");
-//     console.log("info: " + JSON.stringify(info));
-//     console.log("tab: " + JSON.stringify(tab));
-// }
-function getCurrentTabSelection() {
-    var message = 'record_selection';
-    var callback = function (quoteInfo) {
-        console.log(quoteInfo.quote);
+var model_1 = require("./model");
+var message_1 = require("./message");
+var model = new model_1.QuoteModel(chrome.storage.sync);
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.message === message_1.Messages.refreshData) {
+        model.getAll(sendResponse);
+        return true;
+    }
+    return false;
+});
+function ContextMenuOnClick(info, tab) {
+    var callback = function (quote) {
+        model.put(quote, undefined);
     };
+    getCurrentlySelectedQuote(callback);
+}
+function getCurrentlySelectedQuote(callback) {
+    var message = new message_1.Message(message_1.Messages.record, []);
     messageCurrentActiveTab(message, callback);
 }
 function messageCurrentActiveTab(message, responseCallback) {
@@ -17,7 +25,7 @@ function messageCurrentActiveTab(message, responseCallback) {
         chrome.tabs.sendMessage(tabs[0].id, message, responseCallback);
     });
 }
-var recordSelection = chrome.contextMenus.create({ "title": "Record Quote", "contexts": ["selection"], "onclick": getCurrentTabSelection });
+var recordSelection = chrome.contextMenus.create({ "title": "Record Quote", "contexts": ["selection"], "onclick": ContextMenuOnClick });
 // chrome.runtime.onMessage.addListener(
 //     function(request, sender, sendResponse) {
 //       console.log(sender.tab ?

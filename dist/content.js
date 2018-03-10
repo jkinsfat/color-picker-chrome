@@ -1,16 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// alert('hello')
-var messages_1 = require("./messages");
+var tabView_1 = require("./tabView");
+var tabView = new tabView_1.TabView(window, location);
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request === 'record_selection') {
-        var response = getCurrentSelectionInfo();
-        sendResponse(response);
-    }
+    tabView.handleRequest(request, sendResponse);
+    return true;
 });
-function getCurrentSelectionInfo() {
-    return new messages_1.QuoteMessage(window.getSelection().toString(), location.href, new Date);
-}
 // chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
 //     console.log(response.farewell);
 // });

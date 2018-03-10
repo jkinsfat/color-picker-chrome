@@ -1,28 +1,20 @@
 // alert('hello')
-import { Quote} from "./messages";
+import { Quote } from "./quote";
+import { Message, Messages } from "./message";
+import { TabView, iTabView } from "./tabView";
 
+let tabView: iTabView = new TabView(window, location);
 
 chrome.runtime.onMessage.addListener(
     function(
-        request: string,
+        request: Message,
         sender: chrome.runtime.MessageSender, 
         sendResponse: (response: any) => void
-    ): void {
-        if (request === 'record_selection') {
-            let response: Quote = getCurrentSelectionInfo();
-            sendResponse(response);
-        }
-
+    ): boolean {
+        tabView.handleRequest(request, sendResponse);
+        return true;
     }
-)
-
-function getCurrentSelectionInfo(): Quote {
-    return new Quote(
-        window.getSelection().toString(),
-        location.href,
-        new Date
-    );
-}
+);
 
 // chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
 //     console.log(response.farewell);
