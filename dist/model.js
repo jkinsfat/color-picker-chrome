@@ -39,8 +39,6 @@ var QuoteModel = /** @class */ (function () {
     QuoteModel.prototype.getAll = function (callback) {
         this.store.get(function (storage) {
             if (storage.hasOwnProperty('quotes')) {
-                console.log(storage.quotes);
-                console.log(callback);
                 callback(storage.quotes);
             }
             else {
