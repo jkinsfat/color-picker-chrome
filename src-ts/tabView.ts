@@ -12,15 +12,19 @@ export class TabView {
     handleRequest(request: Message, callback: (quote: any) => void): void {
         if (request.message === Messages.record) {
             let response = this.getCurrentSelectedQuote();
+            console.log(request);
             callback(response);
         }
     }
 
     getCurrentSelectedQuote(): Quote {
+        let now = new Date();
+
         return new Quote(
             this.window.getSelection().toString(),
             this.loc.href,
-            new Date
+            now.toDateString(),
+            now.toISOString()
         );
     }
 }

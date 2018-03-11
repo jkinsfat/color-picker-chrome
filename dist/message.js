@@ -13,5 +13,6 @@ var Messages;
     Messages["record"] = "record_selection";
     Messages["newData"] = "popup_data";
     Messages["refreshData"] = "refresh_data";
+    Messages["deleteDatum"] = "delete_datum";
 })(Messages = exports.Messages || (exports.Messages = {}));
 //# sourceMappingURL=message.js.map

@@ -5,5 +5,6 @@ export class Message {
 export enum Messages {
     record = 'record_selection',
     newData = 'popup_data',
-    refreshData = 'refresh_data'
+    refreshData = 'refresh_data',
+    deleteDatum = 'delete_datum'
 }

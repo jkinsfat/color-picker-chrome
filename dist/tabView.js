@@ -10,11 +10,13 @@ var TabView = /** @class */ (function () {
     TabView.prototype.handleRequest = function (request, callback) {
         if (request.message === message_1.Messages.record) {
             var response = this.getCurrentSelectedQuote();
+            console.log(request);
             callback(response);
         }
     };
     TabView.prototype.getCurrentSelectedQuote = function () {
-        return new quote_1.Quote(this.window.getSelection().toString(), this.loc.href, new Date);
+        var now = new Date();
+        return new quote_1.Quote(this.window.getSelection().toString(), this.loc.href, now.toDateString(), now.toISOString());
     };
     return TabView;
 }());

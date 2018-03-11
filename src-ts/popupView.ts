@@ -1,46 +1,42 @@
-import { Message, Messages } from "./message";
 import { Quote } from "./quote";
+import { iPopupViewController } from "./popupViewController";
 
 
 export interface iPopupView {
-    handleRequest(request: Message): void;
-    refresh(): void;
     display(data: Array<any>): void;
+    setController(controller: iPopupViewController): void;
 }
 
-// export class PopupView implements View {
-// }
-
-export class PopupView {
-    private numDisplayed: number = 3;
-    private currentIndexDisplayed: number = -1;
+//Must add a controller to enable delete functionality
+export class QuotePopupView {
+    private controller: iPopupViewController;
 
     constructor(readonly doc: Document) {}
 
-    public handleRequest = (request: Message) => {
-        if (request.message === Messages.newData) {
-            this.display(request.payload);
-        }
-    }
-
-    public refresh = () => {
-        chrome.runtime.sendMessage(
-            new Message(Messages.refreshData, []),
-            this.display
-        );
-    }
-
-    private display = (quotes: Array<Quote>) => {
-        let fragment: DocumentFragment = this.doc.createDocumentFragment();
-        for (let i = 0; i < quotes.length; i++) {
-            let temp = this.createQuoteFrag(quotes[i]);
-            fragment.appendChild(temp);
-        }
+    public display = (quotes: Array<Quote>) => {
         let quoteDiv: HTMLElement | null = this.doc.getElementById('my-quotes');
-        quoteDiv!.appendChild(fragment);
+        quoteDiv!.innerHTML = "";
+
+        if (quotes.length > 0) {
+            let fragment: DocumentFragment = this.doc.createDocumentFragment();
+            for (let i = 0; i < quotes.length; i++) {
+                let temp = this.createQuoteFrag(quotes[i]);
+                fragment.appendChild(temp);
+            }
+            
+            quoteDiv!.appendChild(fragment);
+        } else {
+            let noQuotes: HTMLLIElement = this.doc.createElement('li');
+            noQuotes.appendChild(this.doc.createTextNode('No Quotes Saved'));
+            quoteDiv!.appendChild(noQuotes);
+        }
     }
 
-    //need to escape quote elements so they are not sensitive to HTML injection;
+    public setController(controller: iPopupViewController) {
+        this.controller = controller;
+    }
+
+    //Creates HTML structure to display a single quote
     private createQuoteFrag = (quote: Quote): HTMLLIElement => {
         let outerEnvelope: HTMLLIElement = this.doc.createElement('li'),
             quoteBodyDiv: HTMLDivElement = this.doc.createElement('div'),
@@ -60,30 +56,17 @@ export class PopupView {
         dateDiv.appendChild(dateP);
         dateDiv.appendChild(deleteQuoteButton);
 
-        quoteBodyP.innerHTML = quote.quote;
-        sourceP.innerHTML = quote.source;
-        dateP.innerHTML = quote.accessDate.toDateString();
+        quoteBodyP.appendChild(this.doc.createTextNode(quote.quote));
+        sourceP.appendChild(this.doc.createTextNode(quote.source));
+        dateP.appendChild(this.doc.createTextNode(quote.accessDate));
 
+        deleteQuoteButton.appendChild(this.doc.createTextNode('Delete'));
         deleteQuoteButton.addEventListener('click', () => {
-            this.delete(quote.accessDate.toDateString());
+            //use ISODateTime to uniquely identify quote to delete
+            this.controller.deleteDatumWithValue(quote.fullDateTime);
         });
 
         return outerEnvelope;
     }
-
-    private delete = (date: string): void => {
-
-    }
-    //show quotes (most recent)
-    //if more than numDisplayed show back button.
-
-//update quotes
-    //if more than numDisplayed show back button.
-
-
-//deleteQuote
-    // new Message(Messages.removeData, [quote])
-    //chrome.runtime.sendMessage(Message);
-
-//copy to clipboard?
+    
 }

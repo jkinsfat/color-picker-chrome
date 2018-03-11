@@ -1,20 +1,13 @@
-import { PopupView, iPopupView } from "./popupView";
+import { QuotePopupView, iPopupView } from "./popupView";
 import { Message } from "./message";
+import { iPopupViewController, PopupViewController } from "./popupViewController";
 
-let popupView: iPopupView = new PopupView(document);
+let popupView: iPopupView = new QuotePopupView(document);
+let popupController: iPopupViewController = new PopupViewController(popupView);
+popupView.setController(popupController);
 
 window.onload = function() {
-    popupView.refresh();
+    popupController.refreshViewData();
 }
-
-chrome.runtime.onMessage.addListener(
-    function(
-        request: Message,
-        sender: chrome.runtime.MessageSender, 
-        sendResponse: ((response: any) => void) | undefined
-    ): void {
-        popupView.handleRequest(request);
-    }
-);
 
 

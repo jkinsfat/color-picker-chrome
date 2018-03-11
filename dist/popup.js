@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var popupView_1 = require("./popupView");
-var popupView = new popupView_1.PopupView(document);
+var popupViewController_1 = require("./popupViewController");
+var popupView = new popupView_1.QuotePopupView(document);
+var popupController = new popupViewController_1.PopupViewController(popupView);
+popupView.setController(popupController);
 window.onload = function () {
-    popupView.refresh();
+    popupController.refreshViewData();
 };
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    popupView.handleRequest(request);
-});
 //# sourceMappingURL=popup.js.map

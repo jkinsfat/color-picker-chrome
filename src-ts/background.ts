@@ -9,14 +9,13 @@ chrome.runtime.onMessage.addListener((
     sender: chrome.runtime.MessageSender, 
     sendResponse: (response: any) => void
 ): boolean => {
-    if (request.message === Messages.refreshData) {
-        model.getAll(sendResponse);
-        return true;
-    }
-    return false;
+    handleRequest(request, sendResponse);
+    return true;
 });
 
-function ContextMenuOnClick(info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
+
+
+function contextMenuOnClick(info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
     let callback = (quote: Quote) => {
         model.put(quote, undefined);
     }
@@ -35,7 +34,7 @@ function messageCurrentActiveTab(message: Message, responseCallback: (response: 
 }
 
 let recordSelection = chrome.contextMenus.create(
-    {"title": "Record Quote", "contexts": ["selection"], "onclick": ContextMenuOnClick});
+    {"title": "Record Quote", "contexts": ["selection"], "onclick": contextMenuOnClick});
 
 // chrome.runtime.onMessage.addListener(
 //     function(request, sender, sendResponse) {
